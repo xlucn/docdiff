@@ -13,45 +13,49 @@ p.sample {
 }
 </style>
 </head>
-<h1>文档比较导出工具</h1>
-<form method="post" action="doc-compare" target="_blank" enctype="multipart/form-data">
-    请上传两份<b>纯文本</b>文档：
+<h1>文档对比工具</h1>
+<form method="post" action="result" target="_blank" enctype="multipart/form-data">
+    请上传两份<b>纯文本</b>文档（可以拖拽文件到下方选择按钮）：
     <div>
-        原始版本：<input type="file" name="old" accept="text/plain">
+        原始版本：<input type="file" name="old" accept="text/plain" required>
     </div>
     <div>
-        更新版本：<input type="file" name="new" accept="text/plain">
+        更新版本：<input type="file" name="new" accept="text/plain" required>
     </div>
     <div>
-        <input type="submit" name="getpdf" value="获取PDF">
-        <br>
-        <input type="submit" name="gettex" value="获取TeX">（若PDF编译失败）
+        <input type="submit" value="生成对比文档">
+    </div>
+    <div>
+        <input type="reset" value="重置所有选项！！">
     </div>
 </form>
 <div>
     <h3>说明</h3>
     <p>
-        自动对比两份纯文本文档，以不同颜色高亮形式输出为PDF文档。
+        自动对比两份纯文本文档，以不同颜色高亮形式输出。
         增删部分分两行显示，无变化部分仅显示一行原文。
-        适合OmegaT输出格式。效果：
     </p>
-    <p>原始版本（纯文本）：</p>
+    <p>
+        为方便修改，结果可复制粘贴至Word等软件中，颜色将会被保留。
+    </p>
+    <h3>效果</h3>
+    <p>原始版本：</p>
     <p class="sample">
         Detectability of Black Hole Binaries with Gaia: Dependence on Binary Evolution Models<br>
         “盖亚”探测黑洞双星：双星演化模型的依赖
     </p>
-    <p>更新版本（纯文本）：</p>
+    <p>更新版本：</p>
     <p class="sample">
         来源：Shikauchi2022ApJ928.13<br><br>
         Detectability of Black Hole Binaries with Gaia: Dependence on Binary Evolution Models<br>
         “盖亚”对黑洞双星的可探测性：双星演化模型的影响
     </p>
-    <p>对比版本（PDF文档）：</p>
+    <p>对比版本：</p>
     <p class="sample">
-        <font color="blue">来源：Shikauchi2022ApJ928.13</font><br><br>
+        <span style="color:blue">来源：Shikauchi2022ApJ928.13</span><br><br>
         Detectability of Black Hole Binaries with Gaia: Dependence on Binary Evolution Models<br>
-        “盖亚”<font color="red">探测</font>黑洞双星：双星演化模型的<font color="red">依赖</font><br>
-        “盖亚”<font color="blue">对</font>黑洞双星<font color="blue">的可探测性</font>：双星演化模型的<font color="blue">影响</font>
+        “盖亚”<span style="color:red">探测</span>黑洞双星：双星演化模型的<span style="color:red">依赖</span><br>
+        “盖亚”<span style="color:blue">对</span>黑洞双星<span style="color:blue">的可探测性</span>：双星演化模型的<span style="color:blue">影响</span>
     </p>
 </div>
 </html>

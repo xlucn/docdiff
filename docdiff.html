@@ -11,23 +11,25 @@ p.sample {
     border: 1px solid grey;
     font-size: small;
 }
+input[type=file] {
+    padding: 8px;
+    border: 1px solid grey;
+    border-radius: 8px;
+}
+input {
+    padding: 4px;
+}
 </style>
 </head>
 <h1>文档对比工具</h1>
 <form method="post" action="result" target="_blank" enctype="multipart/form-data">
-    请上传两份<b>纯文本</b>文档（可以拖拽文件到下方选择按钮）：
-    <div>
-        原始版本：<input type="file" name="old" accept="text/plain" required>
-    </div>
-    <div>
-        更新版本：<input type="file" name="new" accept="text/plain" required>
-    </div>
-    <div>
+    请上传两份<b>纯文本</b>文档（可以拖拽文件到下方文件选择框）：
+    <p> 旧版本：<input type="file" name="old" accept="text/plain" required> </p>
+    <p> 新版本：<input type="file" name="new" accept="text/plain" required> </p>
+    <p>
         <input type="submit" value="生成对比文档">
-    </div>
-    <div>
-        <input type="reset" value="重置所有选项！！">
-    </div>
+        <input type="reset" value="重置所有选项！！" onclick="return confirm('是否确认？')">
+    </p>
 </form>
 <div>
     <h3>说明</h3>
@@ -39,12 +41,12 @@ p.sample {
         为方便修改，结果可复制粘贴至Word等软件中，颜色将会被保留。
     </p>
     <h3>效果</h3>
-    <p>原始版本：</p>
+    <p>旧版本：</p>
     <p class="sample">
         Detectability of Black Hole Binaries with Gaia: Dependence on Binary Evolution Models<br>
         “盖亚”探测黑洞双星：双星演化模型的依赖
     </p>
-    <p>更新版本：</p>
+    <p>新版本：</p>
     <p class="sample">
         来源：Shikauchi2022ApJ928.13<br><br>
         Detectability of Black Hole Binaries with Gaia: Dependence on Binary Evolution Models<br>

@@ -1,8 +1,6 @@
 import difflib
 import re
-from flask import Flask, request, send_file
-
-app = Flask('docdiff')
+import sys
 
 
 def linediff(diff, start, end):
@@ -54,13 +52,7 @@ def splitdiff(a, b, addfunc, delfunc, start, end, newline):
     return start + newline.join(text) + end
 
 
-@app.route('/')
-def index():
-    return send_file('docdiff.html')
-
-
-@app.route('/result', methods=['POST', 'GET'])
-def process_file():
+def htmldiff(a, b):
     start = '''<!DOCTYPE html>
 <html>
 <head>
@@ -80,8 +72,8 @@ def process_file():
     def red(x):
         return f'<span style="color:red">{x}</span>'
 
-    return splitdiff(a=request.files['old'].read().decode(),
-                     b=request.files['new'].read().decode(),
+    return splitdiff(a=a,
+                     b=b,
                      addfunc=blue,
                      delfunc=red,
                      start=start,
@@ -90,4 +82,21 @@ def process_file():
 
 
 if __name__ == '__main__':
-    app.run(host='::', port=9000, debug=False)
+    if len(sys.argv) == 3:
+        print(htmldiff(open(sys.argv[1]).read(),
+                       open(sys.argv[2]).read()))
+    else:
+        print('Please pass two plain text files as arguments')
+else:
+    from flask import Flask, request, send_file
+
+    app = Flask('docdiff')
+
+    @app.route('/')
+    def index():
+        return send_file('docdiff.html')
+
+    @app.route('/result', methods=['POST', 'GET'])
+    def process_file():
+        return htmldiff(request.files['old'].read().decode(),
+                        request.files['new'].read().decode())

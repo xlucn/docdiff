@@ -43,10 +43,12 @@ def splitdiff(a, b, addfunc, delfunc, start, end, newline):
         if del0 >= 0 or add0 >= 0:
             old = delregex.sub(delfunc('\\1'), line)
             old = addregex.sub('', old)
-            text.append(old)
+            if len(old) > 0:
+                text.append(old)
             new = addregex.sub(addfunc('\\1'), line)
             new = delregex.sub('', new)
-            text.append(new)
+            if len(new) > 0:
+                text.append(new)
         else:
             text.append(line)
     return start + newline.join(text) + end

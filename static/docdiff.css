@@ -1,0 +1,19 @@
+p.sample {
+    padding: 2px;
+    border: 1px solid grey;
+    font-size: small;
+}
+span.text-add {
+    color: blue;
+}
+span.text-del {
+    color: red;
+}
+input[type=file] {
+    padding: 8px;
+    border: 1px solid grey;
+    border-radius: 8px;
+}
+input {
+    padding: 4px;
+}

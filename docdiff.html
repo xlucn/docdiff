@@ -6,48 +6,8 @@
 <meta name="author" content="Lu Xu">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABlBMVEUAAP//AADF+ovTAAAAMklEQVQ4y2NgGITg/38IJg4wUWodxQYwIpyNVxkjzVwwfAIRh2cYGP4T0MzIxDAKKAYAFPAMBzBBVLYAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
-<style>
-p.sample {
-    padding: 2px;
-    border: 1px solid grey;
-    font-size: small;
-}
-input[type=file] {
-    padding: 8px;
-    border: 1px solid grey;
-    border-radius: 8px;
-}
-input {
-    padding: 4px;
-}
-</style>
-<script>
-function cacheInput() {
-    let boxes = document.getElementsByClassName("prefs");
-    for (let i = 0; i < boxes.length; i++) {
-        localStorage.setItem(boxes[i].id, boxes[i].checked);
-    }
-}
-
-function resetInput() {
-    let boxes = document.getElementsByClassName("prefs");
-    for (let i = 0; i < boxes.length; i++) {
-        localStorage.removeItem(boxes[i].id);
-    }
-}
-
-window.onload = function() {
-    let boxes = document.getElementsByClassName("prefs");
-    for (let i = 0; i < boxes.length; i++) {
-        let v = localStorage.getItem(boxes[i].id);
-        if (v == "true") {
-            boxes[i].checked = true;
-        } else if (v == "false") {
-            boxes[i].checked = false;
-        }
-    }
-}
-</script>
+<script type="text/javascript" src="/static/docdiff.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/docdiff.css">
 </head>
 <h1>文档对比工具</h1>
 <form method="post" action="result" target="_blank" enctype="multipart/form-data">
@@ -73,9 +33,7 @@ window.onload = function() {
     <p>
         自动对比两份纯文本文档，以不同颜色高亮形式输出。
         增删部分分两行显示，无变化部分仅显示一行原文。
-    </p>
-    <p>
-        为方便修改，结果可复制粘贴至Word等软件中，颜色将会被保留。
+        为方便修改，结果可复制粘贴至Word等软件中，格式将会被部分保留。
     </p>
     <h3>效果</h3>
     <p>旧版本：</p>
@@ -91,10 +49,10 @@ window.onload = function() {
     </p>
     <p>对比版本：</p>
     <p class="sample">
-        <span style="color:blue">来源：Shikauchi2022ApJ928.13</span><br><br>
+        <span class="text-add">来源：Shikauchi2022ApJ928.13</span><br><br>
         Detectability of Black Hole Binaries with Gaia: Dependence on Binary Evolution Models<br>
-        “盖亚”<span style="color:red">探测</span>黑洞双星：双星演化模型的<span style="color:red">依赖</span><br>
-        “盖亚”<span style="color:blue">对</span>黑洞双星<span style="color:blue">的可探测性</span>：双星演化模型的<span style="color:blue">影响</span>
+        “盖亚”<span class="text-del">探测</span>黑洞双星：双星演化模型的<span class="text-del">依赖</span><br>
+        “盖亚”<span class="text-add">对</span>黑洞双星<span class="text-add">的可探测性</span>：双星演化模型的<span class="text-add">影响</span>
     </p>
 </div>
 </html>

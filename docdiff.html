@@ -21,6 +21,33 @@ input {
     padding: 4px;
 }
 </style>
+<script>
+function cacheInput() {
+    let boxes = document.getElementsByClassName("prefs");
+    for (let i = 0; i < boxes.length; i++) {
+        localStorage.setItem(boxes[i].id, boxes[i].checked);
+    }
+}
+
+function resetInput() {
+    let boxes = document.getElementsByClassName("prefs");
+    for (let i = 0; i < boxes.length; i++) {
+        localStorage.removeItem(boxes[i].id);
+    }
+}
+
+window.onload = function() {
+    let boxes = document.getElementsByClassName("prefs");
+    for (let i = 0; i < boxes.length; i++) {
+        let v = localStorage.getItem(boxes[i].id);
+        if (v == "true") {
+            boxes[i].checked = true;
+        } else if (v == "false") {
+            boxes[i].checked = false;
+        }
+    }
+}
+</script>
 </head>
 <h1>文档对比工具</h1>
 <form method="post" action="result" target="_blank" enctype="multipart/form-data">
@@ -28,8 +55,17 @@ input {
     <p> 旧版本：<input type="file" name="old" accept="text/plain" required> </p>
     <p> 新版本：<input type="file" name="new" accept="text/plain" required> </p>
     <p>
+        标记方式：
+        <input type="checkbox" class="prefs" id='fg' name='fg' checked onchange="cacheInput()">
+        <label for='fg'>红色/蓝色字体</label>
+        <input type="checkbox" class="prefs" id='bg' name='bg' onchange="cacheInput()">
+        <label for='bg'>黄色背景</label>
+        <input type="checkbox" class="prefs" id='ul' name='ul' onchange="cacheInput()">
+        <label for='ul'>下划线</label>
+    </p>
+    <p>
         <input type="submit" value="生成对比文档">
-        <input type="reset" value="重置所有选项！！" onclick="return confirm('是否确认？')">
+        <input type="reset" value="重置所有选项！！" onclick="resetInput()">
     </p>
 </form>
 <div>

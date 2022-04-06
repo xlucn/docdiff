@@ -33,7 +33,7 @@ def strdiff(a, b):
     return new
 
 
-def splitdiff(a, b, addfunc, delfunc, start, end, newline):
+def splitdiff(a, b, addstyle, delstyle, start, end, newline):
     text = []
     delregex = re.compile('\\[-([^]]*)-\\]')
     addregex = re.compile('{\\+([^}]*)\\+}')
@@ -41,11 +41,11 @@ def splitdiff(a, b, addfunc, delfunc, start, end, newline):
         del0 = line.find('[-')
         add0 = line.find('{+')
         if del0 >= 0 or add0 >= 0:
-            old = delregex.sub(delfunc('\\1'), line)
+            old = delregex.sub(f'<span style="{delstyle}">\\1</span>', line)
             old = addregex.sub('', old)
             if len(old) > 0:
                 text.append(old)
-            new = addregex.sub(addfunc('\\1'), line)
+            new = addregex.sub(f'<span style="{addstyle}">\\1</span>', line)
             new = delregex.sub('', new)
             if len(new) > 0:
                 text.append(new)
@@ -54,7 +54,7 @@ def splitdiff(a, b, addfunc, delfunc, start, end, newline):
     return start + newline.join(text) + end
 
 
-def htmldiff(a, b):
+def htmldiff(a, b, fg, bg, ul):
     start = '''<!DOCTYPE html>
 <html>
 <head>
@@ -65,19 +65,25 @@ def htmldiff(a, b):
 <div>'''
     end = '</div></body>\n</html>'
 
-    def yellow(x):
-        return f'<span style="background-color:yellow">{x}</span>'
-
-    def blue(x):
-        return f'<span style="color:blue">{x}</span>'
-
-    def red(x):
-        return f'<span style="color:red">{x}</span>'
+    addstyle = ''
+    delstyle = ''
+    if fg:
+        addstyle += "color: blue;"
+        delstyle += "color: red;"
+    if bg:
+        addstyle += "background-color: yellow;"
+        delstyle += "background-color: yellow;"
+    if ul:
+        addstyle += "text-decoration-line: underline;"
+        addstyle += "text-decoration-color: blue;"
+        delstyle += "text-decoration-line: underline;"
+        delstyle += "text-decoration-color: red;"
+        delstyle += "text-decoration-style: wavy;"
 
     return splitdiff(a=a,
                      b=b,
-                     addfunc=blue,
-                     delfunc=red,
+                     addstyle=addstyle,
+                     delstyle=delstyle,
                      start=start,
                      end=end,
                      newline='<br>\n')
@@ -101,4 +107,7 @@ else:
     @app.route('/result', methods=['POST', 'GET'])
     def process_file():
         return htmldiff(request.files['old'].read().decode(),
-                        request.files['new'].read().decode())
+                        request.files['new'].read().decode(),
+                        request.form.get('fg') == 'on',
+                        request.form.get('bg') == 'on',
+                        request.form.get('ul') == 'on')

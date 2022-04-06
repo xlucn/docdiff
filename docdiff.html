@@ -15,17 +15,17 @@
     <p> 旧版本：<input type="file" name="old" accept="text/plain" required> </p>
     <p> 新版本：<input type="file" name="new" accept="text/plain" required> </p>
     <p>
-        标记方式：
-        <input type="checkbox" class="prefs" id='fg' name='fg' checked onchange="cacheInput()">
-        <label for='fg'>红色/蓝色字体</label>
-        <input type="checkbox" class="prefs" id='bg' name='bg' onchange="cacheInput()">
-        <label for='bg'>黄色背景</label>
-        <input type="checkbox" class="prefs" id='ul' name='ul' onchange="cacheInput()">
-        <label for='ul'>下划线</label>
+        标记方式（在下方预览）：
+        <input type="checkbox" class="prefs" id="fg" name="fg" checked>
+        <label for="fg">红色/蓝色字体</label>
+        <input type="checkbox" class="prefs" id="bg" name="bg">
+        <label for="bg">黄色背景</label>
+        <input type="checkbox" class="prefs" id="ul" name="ul">
+        <label for="ul">下划线</label>
     </p>
     <p>
         <input type="submit" value="生成对比文档">
-        <input type="reset" value="重置所有选项！！" onclick="resetInput()">
+        <input type="reset" value="重置所有选项！！">
     </p>
 </form>
 <div>

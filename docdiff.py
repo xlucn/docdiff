@@ -33,7 +33,7 @@ def strdiff(a, b):
     return new
 
 
-def splitdiff(a, b, addstyle, delstyle, start, end, newline):
+def splitdiff(a, b, addstyle, delstyle, newline):
     text = []
     delregex = re.compile('\\[-([^]]*)-\\]')
     addregex = re.compile('{\\+([^}]*)\\+}')
@@ -51,20 +51,16 @@ def splitdiff(a, b, addstyle, delstyle, start, end, newline):
                 text.append(new)
         else:
             text.append(line)
-    return start + newline.join(text) + end
+    return newline.join(text)
 
 
 def htmldiff(a, b, fg, bg, ul):
     start = '''<!DOCTYPE html>
-<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
-<div>'''
-    end = '</div></body>\n</html>'
-
+'''
     addstyle = ''
     delstyle = ''
     if fg:
@@ -80,13 +76,10 @@ def htmldiff(a, b, fg, bg, ul):
         delstyle += "text-decoration-color: red;"
         delstyle += "text-decoration-style: wavy;"
 
-    return splitdiff(a=a,
-                     b=b,
-                     addstyle=addstyle,
-                     delstyle=delstyle,
-                     start=start,
-                     end=end,
-                     newline='<br>\n')
+    return start + splitdiff(a=a, b=b,
+                             addstyle=addstyle,
+                             delstyle=delstyle,
+                             newline='<br>\n')
 
 
 if __name__ == '__main__':

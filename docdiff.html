@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="Export document diffs as PDF">
+<meta name="description" content="Compare text files">
 <meta name="author" content="Lu Xu">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABlBMVEUAAP//AADF+ovTAAAAMklEQVQ4y2NgGITg/38IJg4wUWodxQYwIpyNVxkjzVwwfAIRh2cYGP4T0MzIxDAKKAYAFPAMBzBBVLYAAAAASUVORK5CYII=" rel="icon" type="image/x-icon" />
@@ -10,10 +10,19 @@
 <link rel="stylesheet" type="text/css" href="/static/docdiff.css">
 </head>
 <h1>文档对比工具</h1>
+<p>
+    自动对比两份纯文本文档，以不同颜色高亮形式输出。
+    增删部分分两行显示，无变化部分仅显示一行原文。
+    结果可复制粘贴至Word等软件中，格式将会被部分保留。
+</p>
 <form method="post" action="result" target="_blank" enctype="multipart/form-data">
     请上传两份<b>纯文本</b>文档（可以拖拽文件到下方文件选择框）：
-    <p> 旧版本：<input type="file" name="old" accept="text/plain" required> </p>
-    <p> 新版本：<input type="file" name="new" accept="text/plain" required> </p>
+    <p>
+        旧版本：<input type="file" name="old" accept="text/plain" required>
+    </p>
+    <p>
+        新版本：<input type="file" name="new" accept="text/plain" required>
+    </p>
     <p>
         标记方式（在下方预览）：
         <input type="checkbox" class="prefs" id="fg" name="fg" checked>
@@ -29,12 +38,6 @@
     </p>
 </form>
 <div>
-    <h3>说明</h3>
-    <p>
-        自动对比两份纯文本文档，以不同颜色高亮形式输出。
-        增删部分分两行显示，无变化部分仅显示一行原文。
-        为方便修改，结果可复制粘贴至Word等软件中，格式将会被部分保留。
-    </p>
     <h3>效果</h3>
     <p>旧版本：</p>
     <p class="sample">

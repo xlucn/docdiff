@@ -13,6 +13,24 @@ def linediff(diff, start, end):
     return '\n'.join(new)
 
 
+def fastdiff(a, b):
+    new = []
+    list_a = a.split('\n')
+    list_b = b.split('\n')
+    for line_a, line_b in zip(list_a, list_b):
+        line = ''
+        s = difflib.SequenceMatcher(a=line_a, b=line_b)
+        for tag, i1, i2, j1, j2 in s.get_opcodes():
+            if tag == 'replace' or tag == 'insert':
+                line += '{+' + line_b[j1:j2] + '+}'
+            if tag == 'replace' or tag == 'delete':
+                line += '[-' + line_a[i1:i2] + '-]'
+            if tag == 'equal':
+                line += line_a[i1:i2]
+        new.append(line)
+    return '\n'.join(new)
+
+
 def strdiff(a, b):
     s = difflib.SequenceMatcher(
         a=a, b=b,
@@ -33,14 +51,13 @@ def strdiff(a, b):
     return new
 
 
-def splitdiff(a, b, addstyle, delstyle, newline):
+def splitdiff(a, b, addstyle, delstyle, newline, fast=False):
     text = []
     delregex = re.compile('\\[-([^]]*)-\\]')
     addregex = re.compile('{\\+([^}]*)\\+}')
-    for line in strdiff(a, b).split('\n'):
-        del0 = line.find('[-')
-        add0 = line.find('{+')
-        if del0 >= 0 or add0 >= 0:
+    funcdiff = fastdiff if fast else strdiff
+    for line in funcdiff(a, b).split('\n'):
+        if line.find('[-') >= 0 or line.find('{+') >= 0:
             old = delregex.sub(f'<span style="{delstyle}">\\1</span>', line)
             old = addregex.sub('', old)
             if len(old) > 0:
@@ -54,7 +71,7 @@ def splitdiff(a, b, addstyle, delstyle, newline):
     return newline.join(text)
 
 
-def htmldiff(a, b, fg, bg, ul):
+def htmldiff(a, b, fg, bg, ul, fast):
     start = '''<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
@@ -79,7 +96,8 @@ def htmldiff(a, b, fg, bg, ul):
     return start + splitdiff(a=a, b=b,
                              addstyle=addstyle,
                              delstyle=delstyle,
-                             newline='<br>\n')
+                             newline='<br>\n',
+                             fast=fast)
 
 
 if __name__ == '__main__':
@@ -103,4 +121,5 @@ else:
                         request.files['new'].read().decode(),
                         request.form.get('fg') == 'on',
                         request.form.get('bg') == 'on',
-                        request.form.get('ul') == 'on')
+                        request.form.get('ul') == 'on',
+                        request.form.get('fast') == 'on')

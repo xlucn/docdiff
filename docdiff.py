@@ -91,9 +91,11 @@ def htmldiff(a, b, fg, bg, ul, fast):
     if ul:
         addstyle += "text-decoration-line: underline;"
         addstyle += "text-decoration-color: blue;"
+        addstyle += "text-decoration: underline blue;"
         delstyle += "text-decoration-line: underline;"
         delstyle += "text-decoration-color: red;"
         delstyle += "text-decoration-style: wavy;"
+        delstyle += "text-decoration: underline red wavy;"
 
     return start + splitdiff(a=a, b=b,
                              addstyle=addstyle,

@@ -4,6 +4,8 @@ import sys
 
 
 def linediff(diff, start, end):
+    # Sometimes, difflib returns diff blocks containing multiple lines,
+    # this is to split them into individual lines.
     new = []
     for seg in diff.split('\n'):
         if len(seg) > 0:

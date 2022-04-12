@@ -3,68 +3,74 @@ import re
 import sys
 
 
-def linediff(diff, start, end):
-    # Sometimes, difflib returns diff blocks containing multiple lines,
-    # this is to split them into individual lines.
+def diffsplit(diff, prefix, suffix):
+    """
+    Sometimes, difflib returns diff blocks containing multiple lines,
+    this is to split them into individual lines.
+    """
     new = []
-    for seg in diff.split('\n'):
+    for seg in diff.splitlines():
         if len(seg) > 0:
-            new.append(start + seg + end)
+            new.append(prefix + seg + suffix)
         else:
             new.append('')
     return '\n'.join(new)
 
 
+def markdiff(seqmatcher):
+    """
+    quote added segments with '{+' and '+}', removed ones with '[-' and '-]'
+    """
+    line = ''
+    for tag, i1, i2, j1, j2 in seqmatcher.get_opcodes():
+        if tag == 'replace' or tag == 'insert':
+            line += '{+' + seqmatcher.b[j1:j2] + '+}'
+        if tag == 'replace' or tag == 'delete':
+            line += '[-' + seqmatcher.a[i1:i2] + '-]'
+        if tag == 'equal':
+            line += seqmatcher.a[i1:i2]
+    return line
+
+
 def fastdiff(a, b):
+    """
+    compare text strictly line by line
+    """
     new = []
-    list_a = a.split('\n')
-    list_b = b.split('\n')
-    for line_a, line_b in zip(list_a, list_b):
-        line = ''
+    for line_a, line_b in zip(a.splitlines(), b.splitlines()):
         s = difflib.SequenceMatcher(a=line_a, b=line_b)
-        for tag, i1, i2, j1, j2 in s.get_opcodes():
-            if tag == 'replace' or tag == 'insert':
-                line += '{+' + line_b[j1:j2] + '+}'
-            if tag == 'replace' or tag == 'delete':
-                line += '[-' + line_a[i1:i2] + '-]'
-            if tag == 'equal':
-                line += line_a[i1:i2]
-        new.append(line)
+        new.append(markdiff(s))
     return '\n'.join(new)
 
 
 def strdiff(a, b):
+    """
+    compare text, keep the changes within one line
+    """
     s = difflib.SequenceMatcher(
         a=a, b=b,
         isjunk=lambda x: x in ' \n',
         autojunk=False
     )
-    new = ''
-    a0 = 0
-    b0 = 0
-    for ai, bi, li in s.get_matching_blocks():
-        if ai > a0:
-            new += linediff(a[a0:ai], '[-', '-]')
-        if bi > b0:
-            new += linediff(b[b0:bi], '{+', '+}')
-        new += a[ai:ai+li]
-        a0 = ai + li
-        b0 = bi + li
-    return new
+    return markdiff(s)
 
 
-def splitdiff(a, b, addstyle, delstyle, newline, fast=False):
-    text = []
+def splitdiff(a, b, addfmt, delfmt, newline, fast=False):
+    """
+    show added and deleted changes in separate lines
+    """
     delregex = re.compile('\\[-([^]]*)-\\]')
     addregex = re.compile('{\\+([^}]*)\\+}')
     funcdiff = fastdiff if fast else strdiff
-    for line in funcdiff(a, b).split('\n'):
+
+    text = []
+    for line in funcdiff(a, b).splitlines():
         if line.find('[-') >= 0 or line.find('{+') >= 0:
-            old = delregex.sub(f'<span style="{delstyle}">\\1</span>', line)
+            old = delregex.sub(delfmt.format('\\1'), line)
             old = addregex.sub('', old)
             if len(old) > 0:
                 text.append(old)
-            new = addregex.sub(f'<span style="{addstyle}">\\1</span>', line)
+            new = addregex.sub(addfmt.format('\\1'), line)
             new = delregex.sub('', new)
             if len(new) > 0:
                 text.append(new)
@@ -98,9 +104,12 @@ def htmldiff(a, b, fg, bg, ul, fast):
         delstyle += "text-decoration-style: wavy;"
         delstyle += "text-decoration: underline red wavy;"
 
+    addfmt = f'<span style="{addstyle}">{{}}</span>'
+    delfmt = f'<span style="{delstyle}">{{}}</span>'
+
     return start + splitdiff(a=a, b=b,
-                             addstyle=addstyle,
-                             delstyle=delstyle,
+                             addfmt=addfmt,
+                             delfmt=delfmt,
                              newline='<br>\n',
                              fast=fast)
 

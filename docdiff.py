@@ -24,9 +24,9 @@ def markdiff(seqmatcher):
     line = ''
     for tag, i1, i2, j1, j2 in seqmatcher.get_opcodes():
         if tag == 'replace' or tag == 'insert':
-            line += '{+' + seqmatcher.b[j1:j2] + '+}'
+            line += diffsplit(seqmatcher.b[j1:j2], '{+', '+}')
         if tag == 'replace' or tag == 'delete':
-            line += '[-' + seqmatcher.a[i1:i2] + '-]'
+            line += diffsplit(seqmatcher.a[i1:i2], '[-', '-]')
         if tag == 'equal':
             line += seqmatcher.a[i1:i2]
     return line

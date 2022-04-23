@@ -107,7 +107,8 @@ def htmldiff(a, b, fg, bg, ul, fast):
     addfmt = f'<span style="{addstyle}">{{}}</span>'
     delfmt = f'<span style="{delstyle}">{{}}</span>'
 
-    return start + splitdiff(a=a, b=b,
+    return start + splitdiff(a=a.replace('\r\n', '\n'),
+                             b=b.replace('\r\n', '\n'),
                              addfmt=addfmt,
                              delfmt=delfmt,
                              newline='<br>\n',

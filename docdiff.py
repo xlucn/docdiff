@@ -10,10 +10,7 @@ def diffsplit(diff, prefix, suffix):
     """
     new = []
     for seg in diff.splitlines():
-        if len(seg) > 0:
-            new.append(prefix + seg + suffix)
-        else:
-            new.append('')
+        new.append((prefix + seg + suffix) if len(seg) else '')
     return '\n'.join(new)
 
 
@@ -45,7 +42,7 @@ def fastdiff(a, b):
 
 def strdiff(a, b):
     """
-    compare text, keep the changes within one line
+    compare text, keep the changes within one line (see isjunk)
     """
     s = difflib.SequenceMatcher(
         a=a, b=b,
@@ -117,8 +114,7 @@ def htmldiff(a, b, fg, bg, ul, fast):
 
 if __name__ == '__main__':
     if len(sys.argv) == 3:
-        print(htmldiff(open(sys.argv[1]).read(),
-                       open(sys.argv[2]).read()))
+        print(htmldiff(open(sys.argv[1]).read(), open(sys.argv[2]).read()))
     else:
         print('Please pass two plain text files as arguments')
 else:

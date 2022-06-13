@@ -1,6 +1,6 @@
+import argparse
 import difflib
 import re
-import sys
 
 
 def diffsplit(diff, prefix, suffix):
@@ -52,7 +52,7 @@ def strdiff(a, b):
     return markdiff(s)
 
 
-def splitdiff(a, b, addfmt, delfmt, newline, fast=False):
+def splitdiff(a, b, addfmt, delfmt, newline='\n', fast=False):
     """
     show added and deleted changes in separate lines
     """
@@ -112,12 +112,7 @@ def htmldiff(a, b, fg, bg, ul, fast):
                              fast=fast)
 
 
-if __name__ == '__main__':
-    if len(sys.argv) == 3:
-        print(htmldiff(open(sys.argv[1]).read(), open(sys.argv[2]).read()))
-    else:
-        print('Please pass two plain text files as arguments')
-else:
+def flask_app():
     from flask import Flask, request, send_file
 
     app = Flask('docdiff')
@@ -134,3 +129,28 @@ else:
                         request.form.get('bg') == 'on',
                         request.form.get('ul') == 'on',
                         request.form.get('fast') == 'on')
+
+    return app
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--files", nargs=2, help="Input files")
+    parser.add_argument("-l", "--line", action="store_true",
+                        help="Fast line-by-line comparison")
+    parser.add_argument("-r", "--run-flask", action="store_true",
+                        help="Run built-in flask app in terminal")
+    args = parser.parse_args()
+    if not args.run_flask:
+        if args.files is None or args.files == []:
+            print("Use -f option to provide 2 files.")
+        else:
+            print(splitdiff(open(args.files[0]).read(),
+                            open(args.files[1]).read(),
+                            addfmt='\033[31m{}\033[0m',
+                            delfmt='\033[34m{}\033[0m',
+                            fast=args.line))
+    else:
+        flask_app().run(debug=True)
+else:
+    app = flask_app()

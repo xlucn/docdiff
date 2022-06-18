@@ -147,8 +147,8 @@ if __name__ == '__main__':
         else:
             print(splitdiff(open(args.files[0]).read(),
                             open(args.files[1]).read(),
-                            addfmt='\033[31m{}\033[0m',
-                            delfmt='\033[34m{}\033[0m',
+                            addfmt='\033[4;34m{}\033[0m',
+                            delfmt='\033[9;31m{}\033[0m',
                             fast=args.line))
     else:
         flask_app().run(debug=True)

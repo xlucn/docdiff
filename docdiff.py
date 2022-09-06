@@ -135,11 +135,11 @@ def flask_app():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", nargs=2, metavar=('old', 'new'),
+    parser.add_argument("-f", "--files", nargs=2, metavar=('old', 'new'),
                         help="Input files, new file after old file")
-    parser.add_argument("-l", action="store_true",
+    parser.add_argument("-l", "--line", action="store_true",
                         help="Fast line-by-line comparison")
-    parser.add_argument("-r", action="store_true",
+    parser.add_argument("-r", "--run-flask", action="store_true",
                         help="Run built-in flask app in terminal")
     args = parser.parse_args()
     if not args.run_flask:

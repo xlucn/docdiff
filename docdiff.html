@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="/static/docdiff.css">
 <script type="text/javascript" src="/static/docdiff.js"></script>
 </head>
+<body>
 <h1>文档对比工具</h1>
 <p>
     自动对比两份纯文本文档，以不同颜色高亮形式输出。
@@ -37,7 +38,7 @@
     <p>
         快速对比：
         <input type="checkbox" class="prefs" id="fast" name="fast">
-        <label for="fast">严格逐行对比（适用于长文本，但不适用于整行增加或减少的文本对比）</label>
+        <label for="fast">严格逐行对比（适用于长文本，但不适用于存在整行增加或减少的文本对比）</label>
     </p>
     <p>
         <input type="submit" value="生成对比文档">
@@ -45,7 +46,7 @@
     </p>
 </form>
 <div>
-    <h3>效果</h3>
+    <h3>效果预览</h3>
     <p>旧版本：</p>
     <p class="sample">
         Detectability of Black Hole Binaries with Gaia: Dependence on Binary Evolution Models<br>
@@ -65,4 +66,6 @@
         “盖亚”<span class="text-add">对</span>黑洞双星<span class="text-add">的可探测性</span>：双星演化模型的<span class="text-add">影响</span>
     </p>
 </div>
+<a href="https://github.com/oliverlew/docdiff">源代码</a>，<a href="https://github.com/oliverlew/docdiff/issues">反馈问题</a>
+</body>
 </html>

@@ -16,16 +16,11 @@
     增删部分分两行显示，无变化部分仅显示一行原文。
     结果可复制粘贴至Word等软件中，格式将会被部分保留。
 </p>
+<h3>上传文档</h3>
 <form method="post" action="result" target="_blank" enctype="multipart/form-data">
-    <p>
-        请上传两份<b>纯文本</b>文档（可以拖拽文件到下方文件选择框）：
-    </p>
-    <p>
-        旧版本：<input type="file" name="old" accept="text/plain" required>
-    </p>
-    <p>
-        新版本：<input type="file" name="new" accept="text/plain" required>
-    </p>
+    <p>请上传两份<b>纯文本</b>文档（可以拖拽文件到下方文件选择框）：</p>
+    <p>旧版本：<input type="file" name="old" accept="text/plain" required></p>
+    <p>新版本：<input type="file" name="new" accept="text/plain" required></p>
     <p>
         标记方式（在下方预览）：
         <input type="checkbox" class="prefs" id="fg" name="fg" checked>
@@ -38,7 +33,7 @@
     <p>
         快速对比：
         <input type="checkbox" class="prefs" id="fast" name="fast">
-        <label for="fast">严格逐行对比（适用于长文本，但不适用于存在整行增加或减少的文本对比）</label>
+        <label for="fast">严格逐行对比（适用于长文本，但注意须保持新、旧文档每一行严格对应，包括空行）</label>
     </p>
     <p>
         <input type="submit" value="生成对比文档">
@@ -66,6 +61,12 @@
         “盖亚”<span class="text-add">对</span>黑洞双星<span class="text-add">的可探测性</span>：双星演化模型的<span class="text-add">影响</span>
     </p>
 </div>
-<a href="https://github.com/oliverlew/docdiff">源代码</a>，<a href="https://github.com/oliverlew/docdiff/issues">反馈问题</a>
+<div>
+    <h3>问题反馈</h3>
+    <a href="https://github.com/oliverlew/docdiff">源代码仓库</a>，许可证：GPLv3。
+    如出现问题可 <a href="https://github.com/oliverlew/docdiff/issues">在此反馈</a>
+    或 <a href="mailto:oliver_lew@outlook.com">发送邮件</a>，并附可复现问题的文档。
+    这可以帮助改进该平台，谢谢！
+</div>
 </body>
 </html>

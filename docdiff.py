@@ -62,7 +62,7 @@ def splitdiff(a, b, addfmt, delfmt, newline='\n', fast=False):
 
     text = []
     for line in funcdiff(a, b).splitlines():
-        if line.find('[-') >= 0 or line.find('{+') >= 0:
+        if delregex.search(line) or addregex.search(line):
             old = delregex.sub(delfmt.format('\\1'), line)
             old = addregex.sub('', old)
             if len(old) > 0:

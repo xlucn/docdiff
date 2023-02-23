@@ -1,5 +1,6 @@
 import argparse
 import difflib
+import html
 import re
 
 
@@ -62,6 +63,7 @@ def splitdiff(a, b, addfmt, delfmt, newline='\n', fast=False):
 
     text = []
     for line in funcdiff(a, b).splitlines():
+        line = html.escape(line)
         if delregex.search(line) or addregex.search(line):
             old = delregex.sub(delfmt.format('\\1'), line)
             old = addregex.sub('', old)

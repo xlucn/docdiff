@@ -1,4 +1,3 @@
-import argparse
 import difflib
 import html
 import re
@@ -110,43 +109,18 @@ def htmldiff(a, b, fg, bg, ul, fast):
                              fast=fast)
 
 
-def flask_app():
-    from flask import Flask, request, send_file
-
-    app = Flask('docdiff')
-
-    @app.route('/')
-    def index():
-        return send_file('docdiff.html')
-
-    @app.route('/result', methods=['POST', 'GET'])
-    def process_file():
-        return htmldiff(request.files['old'].read().decode(),
-                        request.files['new'].read().decode(),
-                        request.form.get('fg') == 'on',
-                        request.form.get('bg') == 'on',
-                        request.form.get('ul') == 'on',
-                        request.form.get('fast') == 'on')
-
-    return app
+def wrap_splitdiff(old, new, linediff):
+    return splitdiff(open(old).read(),
+                     open(new).read(),
+                     addfmt='\033[4;34m{}\033[0m',
+                     delfmt='\033[9;31m{}\033[0m',
+                     fast=linediff)
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("old", help="Old file")
-    parser.add_argument("new", help="New file")
-    parser.add_argument("-l", "--line", action="store_true",
-                        help="Fast line-by-line comparison")
-    parser.add_argument("-r", "--run-flask", action="store_true",
-                        help="Run built-in flask app in terminal")
-    args = parser.parse_args()
-    if not args.run_flask:
-        print(splitdiff(open(args.old).read(),
-                        open(args.new).read(),
-                        addfmt='\033[4;34m{}\033[0m',
-                        delfmt='\033[9;31m{}\033[0m',
-                        fast=args.line))
-    else:
-        flask_app().run(debug=True)
-else:
-    app = flask_app()
+def wrap_htmldiff(request):
+    return htmldiff(request.files['old'].read().decode(),
+                    request.files['new'].read().decode(),
+                    request.form.get('fg') == 'on',
+                    request.form.get('bg') == 'on',
+                    request.form.get('ul') == 'on',
+                    request.form.get('fast') == 'on')

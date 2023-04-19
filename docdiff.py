@@ -45,11 +45,7 @@ def strdiff(a, b):
     """
     compare text, keep the changes within one line (see isjunk)
     """
-    s = difflib.SequenceMatcher(
-        a=a, b=b,
-        isjunk=lambda x: x in ' \n',
-        autojunk=False
-    )
+    s = difflib.SequenceMatcher(a=a, b=b, isjunk=str.isspace, autojunk=False)
     return markdiff(s)
 
 

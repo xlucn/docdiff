@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Table convert">
+<meta name="author" content="Lu Xu">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/static/docdiff.css">
+<link rel="stylesheet" type="text/css" href="/static/table.css">
+</head>
+<body>
+<h1>文献浏览记录转换</h1>
+<p>（内部使用）</p>
+<p>
+    将文献浏览记录转换为规范的表格形式，可复制入腾讯文档等。
+</p>
+<h3>上传文档</h3>
+<form method="post" action="tablegen_result" target="_blank" enctype="multipart/form-data">
+    <input type="file" name="raw" accept="text/plain" required>
+    <input type="submit" value="转换"> 
+</form>
+<p>
+建议对结果做一些检查。如果有问题，手动修改<b>原文件</b>后，再尝试一次
+（点击上方“转换”按钮，或者在弹出页面直接刷新）
+<ol>
+    <li>备注栏中是否有其他条目。某一条目可能因未识别而出现在上一条目中
+    <ol>
+    <!-- <li><p>原因：文献号缺少年份。修改：据实际文献增加年份（Bob2023……）</p> -->
+    <!-- <table> -->
+    <!--   <tr> -->
+    <!--     <td>张三</td><td>2023-01-01</td><td>John2023PRD123.456</td><td> -->
+    <!--         本条文献备注。BobMNRAS111.222 下一条文献备注。 -->
+    <!--     </td> -->
+    <!--   </tr> -->
+    <!-- </table></li> -->
+    <li><p>原因：姓名包含非英文字母。修改：替换为去除重音符号的字母（Bob）</p>
+    <table>
+      <tr>
+        <td>张三</td><td>2023-01-01</td><td>John2023PRD123.456</td><td>
+            本条文献备注。Böb2023MNRAS111.222 下一条文献备注。
+        </td>
+      </tr>
+    </table></li>
+    <li><p>原因：姓名包含空格。修改：增加连字符（Bailer-Johns）</p>
+    <table>
+      <tr>
+        <td>张三</td><td>2023-01-01</td><td>John2023PRD123.456</td><td>
+            本条文献备注。Bailer Johns2023MNRAS111.222 下一条文献备注。
+        </td>
+      </tr>
+    </table></li>
+    </ol>
+    </li>
+    <li>日期的笔误情况</li>
+</ol>
+</p>
+<p>在弹出窗口，使用浏览器的“全选”（Ctrl-A）与“复制”（Ctrl-C），可复制表格内容。
+在表格文档页面空白行使用Ctrl-V可粘贴表格内容。</p>
+</body>
+</html>

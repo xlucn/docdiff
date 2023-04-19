@@ -1,5 +1,6 @@
 import argparse
 from docdiff import wrap_htmldiff, wrap_splitdiff
+from tablegen import wrap_convert
 
 
 def flask_app():
@@ -19,9 +20,13 @@ def flask_app():
     def process_file():
         return wrap_htmldiff(request)
 
-    @app.route('/docdiff.html')
+    @app.route('/tablegen.html')
     def tablegen_page():
-        return send_file('docdiff.html')
+        return send_file('tablegen.html')
+
+    @app.route('/tablegen_result', methods=['POST'])
+    def table_convert():
+        return wrap_convert(request)
 
     return app
 

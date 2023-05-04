@@ -8,8 +8,7 @@ class Converter:
     def __init__(self, filename=None, filestorage=None):
         self.regex_date = re.compile(r'—+\s+(\d{4}-\d{2}-\d{2})\s+—+')
         self.regex_person = re.compile(r'(\w+)\s+\d{2}:\d{2}')
-        # self.regex_article = re.compile(r'(\d+\.?\s*)?([-a-zA-Z0-9]+\d{4}[-a-zA-Z&]+[.0-9a-zA-Z]*)\s*(.*)')
-        self.regex_article = re.compile(r'(\d+\.?\s*)?([.&-a-zA-Z0-9]+)\s*(.*)')
+        self.regex_article = re.compile(r'(\d+\.?\s*)?([-a-zA-Z0-9]+\d{4}[-&.0-9a-zA-Z]+)\s*(.*)')
         self.regex_comment = re.compile(r'(.+)')
         self.regex_datesimp = re.compile(r'.*(\d{2,4})\.?(\d{2})\.?(\d{2}).*')
 
